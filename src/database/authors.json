@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Kostas",
+    "surname": "The Don",
+    "email": "k@@@",
+    "dateOfBirth": "hehe",
+    "avatar": "https://ui-avatars.com/api/?name=John+Doe",
+    "_id": "3jz3wwkou5gw77"
+  },
+  {
+    "name": "John",
+    "surname": "The Sportsman",
+    "email": "John@hotmail.com",
+    "dateOfBirth": "who knows",
+    "avatar": "https://ui-avatars.com/api/?name=John+Doe",
+    "createdAt": "2021-05-18T15:32:42.712Z",
+    "_id": "3jzc88kou73h3t"
+  }
+]

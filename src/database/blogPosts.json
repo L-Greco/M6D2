@@ -1,0 +1,19 @@
+[
+  {
+    "_id": "3jz1mwkowwy6iq",
+    "category": " Horror",
+    "title": "Im learning back-end xD ",
+    "cover": "https://res.cloudinary.com/kostasdev/image/upload/v1622039540/umn1fejjcrp9zpd1rxaj.jpg",
+    "readTime": { "value": 4, "unit": "hours" },
+    "content": "HTML",
+    "author": "Kostas",
+    "avatar": "https://ui-avatars.com/api/?name=John+Doe",
+    "createdAT": "2021-05-20T13:11:58.082Z",
+    "comments": [
+      { "author": "Kostas", "text": "Nice blog mate!" },
+      { "author": "John", "text": "Gooode Jobe!" },
+      { "author": "Nick", "text": "Gooode  Yeaaah Jobe!" }
+    ],
+    "updateAt": "2021-05-26T14:32:20.762Z"
+  }
+]
