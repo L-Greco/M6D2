@@ -8,6 +8,7 @@ import mailRouter from "../user.js"
 import { badRequestErrorHandler, notFoundErrorHandler, forbiddenErrorHandler, catchAllErrorHandler } from "./errorHandlers.js"
 import { fileURLToPath } from "url"
 import { dirname, join } from "path"
+import mongoose from "mongoose"
 const publicPath = join(dirname(fileURLToPath(import.meta.url)), "../public")
 
 
@@ -44,4 +45,15 @@ server.use(notFoundErrorHandler)
 server.use(forbiddenErrorHandler)
 server.use(catchAllErrorHandler)
 
-server.listen(port, () => { console.log("Sever listens on  http://localhost: ", port) })
+mongoose
+    .connect(process.env.ATLAS_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+    })
+    .then(
+        server.listen(port, () => {
+            console.log("Running on port", port)
+        })
+    )
+    .catch(err => console.log(err))
