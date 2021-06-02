@@ -203,6 +203,44 @@ blogPostsRouter.get("/:blogId/comments/:commentId", async (req, res, next) => {
     }
 })
 
+blogPostsRouter.put("/:blogId/comments/:commentId", async (req, res, next) => {
+    try {
+        const blog = await BlogModel.findById(req.params.blogId)
+        if (blog) {
+            const comment = await BlogModel.findOne({
+                _id: req.params.blogId
+            },
+                {
+                    comments: {
+                        $elemMatch: { _id: req.params.commentId }
+                    }
+                })
+            if (comment) {
+                const updatedComment = await BlogModel.findOneAndUpdate(
+                    // for checking multiple fields
+                    { _id: req.params.blogId, "comments._id": req.params.commentId },
+                    {
+                        $set: { "comments.$": req.body } // set needs the index of the array and we get it back with comments.$
+                    }, {
+                    runValidators: true,
+                    new: true,
+                }
+                )
+                console.log(updatedComment);
+                res.status(201).send(updatedComment)
+            } else {
+                next(createError(404, `Comment with id: ${req.params.commentId} not found!`))
+
+            }
+        } else {
+            next(createError(404, `Blog with id: ${req.params.blogId} not found!`))
+
+        }
+    } catch (error) {
+        console.log(error);
+        next(error)
+    }
+})
 
 
 
