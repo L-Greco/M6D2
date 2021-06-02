@@ -40,6 +40,13 @@ const BlogSchema = new Schema(
             type: String,
             required: true,
         },
+        comments: [
+            {
+                author: String,
+                text: String,
+
+            }, { timestamps: true }
+        ],
     },
     { timestamps: true }
 )
