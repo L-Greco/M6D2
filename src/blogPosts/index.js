@@ -135,28 +135,29 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
 
 });
-blogPostsRouter.put("/:blogId/uploadCover", multer({ storage }).single("cover"), async (req, res, next) => {
-    try {
-        const blogs = await getBlogPosts()
-        const blog = blogs.find(blog => blog._id === req.params.blogId)
-        if (blog) {
-            // await writeBlogPostsPictures(`${blog._id}.jpg`, req.file.buffer)
-            // res.send(`Picture with name "${blog._id}.jpg" is uploaded!`)
-            const updatedBlog = { ...blog, cover: req.file.path, updatedAt: new Date() }
-            const remainingBlogs = blogs.filter(blog => blog._id !== req.params.blogId)
-            remainingBlogs.push(updatedBlog)
-            await writeBlogPosts(remainingBlogs)
-            res.send(req.file)
-        } else {
-            next(createError(404, `Blog with id: ${req.params.blogId} not found!`))
-        }
-    } catch (error) {
-        console.log(error);
-        next(error)
-    }
+// blogPostsRouter.put("/:blogId/uploadCover", multer({ storage }).single("cover"), async (req, res, next) => {
+//     try {
+//         const blog = await BlogModel.findByIdAndUpdate(req.params.blogId, req.body, {
+//             runValidators: true,
+//             new: true // me auti thn entoli stelnei meta to kainourgio kai oxi to palio
+//         })
+//         const blog = blogs.find(blog => blog._id === req.params.blogId)
+//         if (blog) {
+//             const updatedBlog = { ...blog, cover: req.file.path, updatedAt: new Date() }
+//             const remainingBlogs = blogs.filter(blog => blog._id !== req.params.blogId)
+//             remainingBlogs.push(updatedBlog)
+//             await writeBlogPosts(remainingBlogs)
+//             res.send(req.file)
+//         } else {
+//             next(createError(404, `Blog with id: ${req.params.blogId} not found!`))
+//         }
+//     } catch (error) {
+//         console.log(error);
+//         next(error)
+//     }
 
 
-})
+// })
 
 
 blogPostsRouter.delete("/:blogId", async (req, res, next) => {
