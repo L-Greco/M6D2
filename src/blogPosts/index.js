@@ -10,9 +10,10 @@ import multer from "multer"
 import { v2 as cloudinary } from "cloudinary"
 import { CloudinaryStorage } from "multer-storage-cloudinary"
 import BlogModel from "./schema.js"
+import AuthorModel from "../authors/Schema.js"
 
 const blogPostsJsonPath = join(dirname(fileURLToPath(import.meta.url)), "blogPosts.json")
-console.log(blogPostsJsonPath);
+
 
 const blogPostsRouter = express.Router()
 
@@ -20,11 +21,23 @@ const blogPostsRouter = express.Router()
 blogPostsRouter.post("/", async (req, res, next) => {
 
     try {
+
+
         const newBlog = new BlogModel(req.body)
         const { _id } = await newBlog.save()
 
+        const author = await AuthorModel.findByIdAndUpdate(req.body.author,
+            {
+                $push: { blogs: _id }
+            }
+            , {
+                runValidators: true,
+                new: true // me auti thn entoli stelnei meta to kainourgio kai oxi to palio
+            })
 
-        res.status(201).send(newBlog)
+
+
+        res.status(201).send("You successfully posted a blog with id:" + _id + " and Author name : " + author.name)
 
     } catch (error) {
         console.log(error)
@@ -52,7 +65,7 @@ blogPostsRouter.get("/", async (req, res, next) => {
 blogPostsRouter.get("/:blogId", async (req, res, next) => {
     try {
         const id = req.params.blogId
-        const blog = await BlogModel.findById(id)
+        const blog = await BlogModel.findById(id).populate("author")
         if (blog) {
             res.send(blog)
         } else {
@@ -132,7 +145,7 @@ blogPostsRouter.delete("/:blogId", async (req, res, next) => {
             next(createError(404, `Blog with id: ${req.params.blogId} not found!`))
         }
     } catch (error) {
-        console.log(error);
+        console.log("line 135" + error);
         next(error)
     }
 })
@@ -228,7 +241,7 @@ blogPostsRouter.put("/:blogId/comments/:commentId", async (req, res, next) => {
                 // when it updates the object , so  every time you make an edit the id changes and you have
                 //  to get the new id again 
                 const updatedBlog = await BlogModel.findOneAndUpdate(
-                    // for checking multiple fields,
+                    //with findOneAndUpdate we  check multiple fields(i am not sure how accurate is this but i will check it lator),
 
                     { _id: req.params.blogId, "comments._id": req.params.commentId },
                     {
@@ -256,6 +269,22 @@ blogPostsRouter.put("/:blogId/comments/:commentId", async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
+        next(error)
+    }
+})
+
+blogPostsRouter.delete("/:blogId/comments/:commentId", async (req, res, next) => {
+    try {
+        const blog = await findByIdAndUpdate(
+            req.params.blogId,
+            {
+                $pull: {
+                    comments: { _id: req.params.commentId }
+                }
+            }
+        )
+        res.status(201).send(`the commend with id ${req.params.commentId} is deleted`)
+    } catch (error) {
         next(error)
     }
 })

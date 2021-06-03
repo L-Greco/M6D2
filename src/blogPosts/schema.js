@@ -27,14 +27,7 @@ const BlogSchema = new Schema(
                 required: true,
             },
         }, author: {
-            name: {
-                type: String,
-                required: true,
-            },
-            avatar: {
-                type: String,
-                required: true,
-            },
+            type: Schema.Types.ObjectId, required: true, ref: "Author"
         },
         content: {
             type: String,
@@ -45,7 +38,7 @@ const BlogSchema = new Schema(
                 author: String,
                 text: String,
 
-            }, { timestamps: true }
+            }
         ],
     },
     { timestamps: true }
