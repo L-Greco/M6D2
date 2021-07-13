@@ -35,6 +35,7 @@ authorsRouter.get("/", async (req, res, next) => {
         next(error)
     }
 })
+
 // this route brings the authors data but without the blogPosts 
 authorsRouter.get("/:authorId", async (req, res, next) => {
     try {
@@ -56,6 +57,8 @@ authorsRouter.get("/:authorId/withPosts", async (req, res, next) => {
     try {
         const id = req.params.authorId
         const author = await AuthorModel.findById(id).populate("blogs")
+        // const blogPosts = await blogModel.find().populate({path:"authors","select":"name surname"}).populate("comments")
+        // in the code above we populate in chain 2 different paths and in the first one we populate only the name and the surname
         if (author) {
             res.send(author)
         } else {

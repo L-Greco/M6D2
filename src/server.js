@@ -45,7 +45,7 @@ server.use(badRequestErrorHandler)
 server.use(notFoundErrorHandler)
 server.use(forbiddenErrorHandler)
 server.use(catchAllErrorHandler)
-// the lib for the MongoDb Database
+//mongoose is  the lib for the MongoDb Database
 mongoose
     .connect(process.env.ATLAS_URL, {
         useNewUrlParser: true,

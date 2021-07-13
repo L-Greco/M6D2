@@ -27,7 +27,7 @@ const BlogSchema = new Schema(
                 required: true,
             },
         }, author: {
-            type: Schema.Types.ObjectId, required: true, ref: "Author"
+            type: Schema.Types.ObjectId, required: true, ref: "Author" // here we write the model name 
         },
         content: {
             type: String,

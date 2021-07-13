@@ -27,10 +27,13 @@ const AuthorSchema = new Schema(
             required: false,
         },
         blogs: [
-            { type: Schema.Types.ObjectId, ref: "Blog" }
-        ]
+            { type: Schema.Types.ObjectId, ref: "Blog" } // here as a "Blog" 
+        ]            // we write what we export from Blog Schema from "Blog"
     },
     { timestamps: true }
 )
+// here the collection is named Author
+// 
+
 
 export default model("Author", AuthorSchema)
