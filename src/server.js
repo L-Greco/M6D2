@@ -4,7 +4,7 @@ import authorsRoutes from "./authors/index.js"
 import blogPostsRouter from "./blogPosts/index.js"
 import authorsCsvRoute from "./authors/forCsv.js"
 import mailRouter from "../user.js"
-import { badRequestErrorHandler, notFoundErrorHandler, forbiddenErrorHandler, catchAllErrorHandler } from "./errorHandlers.js"
+import { badRequestErrorHandler, notFoundErrorHandler, forbiddenErrorHandler, catchAllErrorHandler, notAuthorizedUserErrorHandler } from "./errorHandlers.js"
 import { fileURLToPath } from "url"
 import { dirname, join } from "path"
 import mongoose from "mongoose"
@@ -42,6 +42,7 @@ server.use("/mail", mailRouter)
 // ******** ERROR MIDDLEWARES ************
 
 server.use(badRequestErrorHandler)
+server.use(notAuthorizedUserErrorHandler)
 server.use(notFoundErrorHandler)
 server.use(forbiddenErrorHandler)
 server.use(catchAllErrorHandler)

@@ -56,4 +56,22 @@ AuthorSchema.pre("save", async function (next) {
 })
 
 
+AuthorSchema.statics.checkCredentials = async function (name, plainText) {
+    const author = await this.findOne({ name })
+    if (author) {
+        const hashedPassword = author.password
+        const isMatch = await bcrypt.compare(plainText, hashedPassword)
+        if (isMatch) return author
+        else return null
+    } else {
+        return null
+    }
+}
+
+AuthorSchema.methods.toJSON = function () {
+    const author = this
+    const { name, surname, email } = author.toObject()
+    return { name, surname, email }
+}
+
 export default model("Author", AuthorSchema)
