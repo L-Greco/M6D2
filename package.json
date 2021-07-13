@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^7.4.4",
+    "atob": "^2.1.2",
+    "bcrypt": "^5.0.1",
     "cloudinary": "^1.25.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
