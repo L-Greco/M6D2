@@ -1,9 +1,27 @@
 import express from "express"
 import AuthorModel from "./Schema.js"
 import createError from "http-errors"
-import { basicAuthMiddleware } from "../library/auth.js"
+import { JWTAuthMiddleware, jwtAuthenticate } from "../library/auth.js"
+import { adminOnly } from "../library/fs-tools.js"
 
 const authorsRouter = express.Router()
+authorsRouter.post("/login", async (req, res, next) => {
+    try {
+        const { name, password } = req.body
+        // 1. Verify credentials
+        const author = await AuthorModel.checkCredentials(name, password)
+        if (author) {
+            // 2. Generate token if credentials are ok
+            const accessToken = await jwtAuthenticate(author)
+            // 3. Send token as a response 
+            res.send({ accessToken })
+        } else {
+            next(createError(401))
+        }
+    } catch (error) {
+        next(error)
+    }
+})
 
 authorsRouter.post("/", async (req, res, next) => {
 
@@ -15,9 +33,8 @@ authorsRouter.post("/", async (req, res, next) => {
         res.status(201).send(_id)
 
     } catch (error) {
-        console.log(error)
-        if (error.name === "ValdidationError") {
-            next(createError(400, error))
+        if (JSON.stringify(error.errors.role).includes("ValidatorError")) {
+            next(createError(400, error.errors.role))
         } else {
             next(createError(500, "An error occurred while saving the author "))
         }
@@ -26,7 +43,7 @@ authorsRouter.post("/", async (req, res, next) => {
 })
 
 
-authorsRouter.get("/", basicAuthMiddleware, async (req, res, next) => {
+authorsRouter.get("/", adminOnly, JWTAuthMiddleware, async (req, res, next) => {
     try {
         const authors = await AuthorModel.find()
         res.send(authors)

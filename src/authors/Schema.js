@@ -31,6 +31,9 @@ const AuthorSchema = new Schema(
             type: String,
             required: false,
         },
+        role: {
+            type: String, required: true, enum: ["Admin", "User"]
+        },
         blogs: [
             { type: Schema.Types.ObjectId, ref: "Blog" } // here as a "Blog" 
         ]            // we write what we export from Blog Schema from "Blog"

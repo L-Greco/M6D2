@@ -8,6 +8,7 @@ import { badRequestErrorHandler, notFoundErrorHandler, forbiddenErrorHandler, ca
 import { fileURLToPath } from "url"
 import { dirname, join } from "path"
 import mongoose from "mongoose"
+import listEndpoints from "express-list-endpoints"
 const publicPath = join(dirname(fileURLToPath(import.meta.url)), "../public")
 
 
@@ -38,7 +39,7 @@ server.use("/csvAuthors", authorsCsvRoute)
 server.use("/blogPosts", blogPostsRouter)
 server.use("/mail", mailRouter)
 
-
+console.table(listEndpoints(server))
 // ******** ERROR MIDDLEWARES ************
 
 server.use(badRequestErrorHandler)
