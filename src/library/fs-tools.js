@@ -2,6 +2,9 @@ import fs from "fs-extra"
 import { fileURLToPath } from "url"
 import { dirname, join } from "path"
 import createError from 'http-errors'
+import { verifyToken } from "./auth.js"
+import AuthorModel from "../authors/Schema.js"
+
 
 const authorsImg = join(dirname(fileURLToPath(import.meta.url)), "../../public/img/authors")
 const blogPostsImg = join(dirname(fileURLToPath(import.meta.url)), "../../public/img/blogPosts")
@@ -30,9 +33,10 @@ export const getAuthorsReadStream = () => fs.createReadStream(authorsPath)
 
 
 // checks if the user is admin or not
-export const adminOnly = (req, res, next) => {
-    console.log(req, "lalallalaal", req.user)
-    if (req.user.role === "Admin") { // if role is admin we can proceed to the request handler
+export const adminOnly = async (req, res, next) => {
+    const token = req.headers.authorization.replace("Bearer ", "")
+    const content = await verifyToken(token)
+    if (content.role === "Admin") { // if role is admin we can proceed to the request handler
         next()
     } else { // we trigger a 403 error
         next(createError(403, "Admins only!"))

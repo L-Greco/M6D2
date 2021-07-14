@@ -41,13 +41,15 @@ const generateJWT = (payload) =>
     )
 
 export const jwtAuthenticate = async (user) => {
-    const accessToken = await generateJWT({ _id: user._id })
+    const accessToken = await generateJWT({ _id: user._id, role: user.role })
+    // i add role so i can check it later when i will receive the token from the FE
     return accessToken
 }
 
 export const verifyToken = token =>
     new Promise((resolve, reject) =>
         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+            // decoded === payload
             if (err) reject(err)
 
             resolve(decodedToken)
