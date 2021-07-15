@@ -16,7 +16,7 @@ authorsRouter.post("/login", async (req, res, next) => {
             // 3. Send token as a response 
             res.send({ accessToken })
         } else {
-            next(createError(401))
+            next(createError(401, "Wrong Credentials"))
         }
     } catch (error) {
         next(error)
