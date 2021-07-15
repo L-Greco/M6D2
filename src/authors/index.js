@@ -128,6 +128,9 @@ authorsRouter.delete("/:authorId", async (req, res, next) => {
     }
 })
 
+// Google Login Stuff
+// We do it via passport library
+
 
 
 export default authorsRouter
